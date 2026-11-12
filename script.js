@@ -83,7 +83,7 @@ let currentConfig = {
 };
 
 // ============================================================================
-// 2. نظام الروبوت الطائر مع 4 تعبيرات وحركات ملل طبيعية وهادئة (بدون دوران مزعج)
+// 2. نظام الروبوت الطائر مع 4 تعبيرات وحركات ملل طبيعية وهادئة
 // ============================================================================
 let mouseX = window.innerWidth * 0.62;
 let mouseY = window.innerHeight * 0.72;
@@ -94,17 +94,16 @@ let lastBoredStageTime = 0;
 let isBotBored = false;
 let boredActionIndex = 0;
 
-// قائمة حركات وتعبيرات الملل الـ 4 المتنوعة واللطيفة
 const BORED_STATES = [
     {
         cssClass: 'bored-yawn',
         badgeText: 'BORED & SLEEPY 🥱',
-        speech: "*Yaaawn* 🥱 It's so quiet in outer space... I'm getting a little sleepy waiting for your next engineering move, Zainab!"
+        speech: "*Yaaawn* 🥱 It's so quiet in outer space... I'm getting a little sleepy waiting for your next engineering move, Mission Architect!"
     },
     {
         cssClass: 'bored-look',
         badgeText: 'LOOKING AROUND 👀',
-        speech: "👀 Hmm... *looks left and right*... Are you still there Engineer Zainab? Let's test a new destination or payload!"
+        speech: "👀 Hmm... *looks left and right*... Are you still there Commander? Let's test a new destination or payload!"
     },
     {
         cssClass: 'bored-sigh',
@@ -132,11 +131,10 @@ window.addEventListener('mousemove', (e) => {
     mouseY = e.clientY;
     lastMouseMoveTime = Date.now();
 
-    // بمجرد أن تحركي الماوس، يستيقظ الروبوت فوراً من الملل ويعود لحالته المنتبهة!
     if (isBotBored) {
         isBotBored = false;
         clearBoredClasses();
-        updateSystem(); // استعادة حالة السعادة أو التحذير الهندسي
+        updateSystem();
     }
 });
 
@@ -163,7 +161,6 @@ function updateFloatingRobotLoop() {
         const now = Date.now();
         const idleSeconds = (now - lastMouseMoveTime) / 1000;
 
-        // إذا توقف الماوس لمدة 5 ثوانٍ، يبدأ الروبوت بالتعبير عن الملل ويغير حركته بهدوء كل 5 ثوانٍ
         if (idleSeconds > 5 && !isFlying) {
             if (!isBotBored) {
                 isBotBored = true;
@@ -175,7 +172,6 @@ function updateFloatingRobotLoop() {
             }
         }
 
-        // حساب موقع الروبوت ليتبع الماوس بنعومة
         let targetX = mouseX - 315;
         let targetY = mouseY + 18;
 
@@ -792,7 +788,7 @@ function showFinalMissionModal() {
         score.style.color = 'var(--emerald)';
         title.textContent = "🎉 FULL MISSION & RETURN SUCCESSFUL!";
         score.textContent = `${finalScore}%`;
-        summary.textContent = `Congratulations Mission Architect Zainab! Your spacecraft launched on the ${data.rocket.name}, landed safely on ${data.dest.name}, collected surface data, and returned to Earth!`;
+        summary.textContent = `Congratulations Mission Architect! Your spacecraft launched on the ${data.rocket.name}, landed safely on ${data.dest.name}, collected surface data, and returned to Earth!`;
 
         log.innerHTML = `
             <li>✅ <strong>Budget Approved:</strong> $${data.totalCost}M utilized within $${BUDGET_CAP}M cap.</li>
@@ -800,7 +796,7 @@ function showFinalMissionModal() {
             <li>✅ <strong>Power Grid Stable:</strong> Generating ${data.powerSupply}W (Consuming ${data.powerDraw}W).</li>
             <li>✅ <strong>Total Science Return:</strong> ${data.scienceScore}% raw science + ${efficiencyBonus}% efficiency bonus!</li>
         `;
-        setRobotSpeech(`🎉 WE DID IT ZAINAB! ${finalScore}% Mission Score! Safe landing and return from ${data.dest.name}!`);
+        setRobotSpeech(`🎉 WE DID IT, ARCHITECT! ${finalScore}% Mission Score! Safe landing and return from ${data.dest.name}!`);
     } else {
         card.style.borderColor = 'var(--danger)';
         score.style.borderColor = 'var(--danger)';
