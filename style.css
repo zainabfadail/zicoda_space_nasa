@@ -1,0 +1,917 @@
+:root {
+    --bg-charcoal: #10131a;
+    --panel-dark: #181c26;
+    --panel-border: #2a3142;
+    --emerald: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.28);
+    --rose-gold: #e6a4b4;
+    --pastel-purple: #c4b5fd;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-charcoal);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* الشريط العلوي */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 22px;
+    background: #0b0e14;
+    border-bottom: 1px solid var(--panel-border);
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badge-nasa {
+    background: linear-gradient(135deg, var(--emerald), #059669);
+    color: #000;
+    font-weight: 800;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.8px;
+}
+
+.brand h1 {
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    color: var(--text-main);
+}
+
+.sub-brand {
+    color: var(--rose-gold);
+    font-weight: 400;
+    font-size: 0.85rem;
+}
+
+.mission-status-bar {
+    display: flex;
+    gap: 10px;
+}
+
+.status-pill {
+    background: var(--panel-dark);
+    border: 1px solid var(--panel-border);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+}
+
+.status-online strong {
+    color: var(--emerald);
+}
+
+/* شبكة لوحة التحكم */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 330px 1fr 350px;
+    gap: 12px;
+    padding: 12px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.panel {
+    background: var(--panel-dark);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.panel-title {
+    font-size: 0.88rem;
+    color: var(--rose-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--emerald);
+    padding-left: 8px;
+}
+
+.panel-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+/* بطاقات الخيارات */
+.options-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.option-card {
+    background: #12161f;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 9px 11px;
+    text-align: left;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-card:hover {
+    border-color: var(--pastel-purple);
+}
+
+.option-card.active {
+    border-color: var(--emerald);
+    background: rgba(16, 185, 129, 0.12);
+    box-shadow: 0 0 12px var(--emerald-glow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+    font-size: 0.85rem;
+}
+
+.option-card p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.diff-tag, .cost-tag {
+    font-size: 0.68rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.easy { background: rgba(16, 185, 129, 0.2); color: var(--emerald); }
+.medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+.hard { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+.cost-tag { background: rgba(196, 181, 253, 0.2); color: var(--pastel-purple); }
+
+/* القوائم المنسدلة */
+.subsystem-selects {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.subsystem-selects label {
+    font-size: 0.75rem;
+    color: var(--pastel-purple);
+    font-weight: 600;
+}
+
+.subsystem-selects select {
+    background: #12161f;
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    padding: 7px;
+    border-radius: 6px;
+    font-size: 0.77rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* العمود الأوسط: شاشة الفضاء 3D */
+.viewport-panel {
+    padding: 10px;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.viewport-container {
+    flex: 1;
+    background: radial-gradient(circle at center, #1b2234 0%, #07090e 100%);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #262d3d;
+}
+
+.viewport-overlay-top {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    font-size: 0.74rem;
+    z-index: 5;
+}
+
+.live-indicator {
+    color: var(--emerald);
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.controls-hint {
+    color: var(--pastel-purple);
+    background: rgba(0, 0, 0, 0.65);
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+/* شريط مراحل الطيران السينمائي */
+.flight-timeline-hud {
+    position: absolute;
+    top: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 82%;
+    background: rgba(11, 14, 20, 0.9);
+    border: 1px solid var(--emerald);
+    border-radius: 12px;
+    padding: 10px 16px;
+    z-index: 10;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+    text-align: center;
+}
+
+.flight-phase-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--emerald);
+    margin-bottom: 6px;
+    letter-spacing: 0.6px;
+}
+
+.flight-progress-track {
+    width: 100%;
+    height: 7px;
+    background: #1f2937;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.flight-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--emerald), var(--rose-gold), var(--pastel-purple));
+    transition: width 0.1s linear;
+}
+
+.flight-steps-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.flight-steps-labels span.active-step {
+    color: var(--rose-gold);
+    font-weight: 700;
+}
+
+.viewport-legend {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    background: rgba(11, 14, 20, 0.82);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* شريط الهندسة السفلي */
+.engineering-status-strip {
+    background: #12161f;
+    border: 1px solid var(--emerald);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+}
+
+.engineering-status-strip.strip-error {
+    border-color: var(--danger);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.strip-title {
+    font-weight: 800;
+    color: var(--rose-gold);
+    white-space: nowrap;
+}
+
+.strip-msg {
+    color: var(--emerald);
+    font-weight: 600;
+}
+
+.engineering-status-strip.strip-error .strip-msg {
+    color: #fca5a5;
+}
+
+/* =========================================================================
+   الروبوت الطائر الحر مع تعابير وحركات الملل الهادئة والمتنوعة
+   ========================================================================= */
+.floating-robot {
+    position: fixed;
+    top: 75%;
+    left: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: filter 0.3s ease;
+}
+
+/* فقاعة الكلام المرافقة للروبوت */
+.bot-speech-bubble {
+    width: 260px;
+    background: rgba(16, 19, 26, 0.94);
+    border: 2px solid var(--emerald);
+    border-radius: 14px 14px 2px 14px;
+    padding: 9px 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 15px rgba(16, 185, 129, 0.25);
+    backdrop-filter: blur(6px);
+    transform-origin: bottom right;
+    transition: all 0.3s ease;
+}
+
+/* تلوين الفقاعة عند الحزن/الخطأ */
+.floating-robot.mood-sad .bot-speech-bubble {
+    border-color: var(--danger);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 18px rgba(239, 68, 68, 0.35);
+}
+
+/* تلوين الفقاعة بالبنفسجي الهادئ عند شعوره بالملل */
+.floating-robot.mood-bored .bot-speech-bubble {
+    border-color: var(--pastel-purple);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 18px rgba(196, 181, 253, 0.3);
+}
+
+.bot-bubble-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.bot-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--rose-gold);
+    letter-spacing: 0.5px;
+}
+
+.bot-mood-tag {
+    font-size: 0.64rem;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--emerald);
+    transition: all 0.3s ease;
+}
+
+.floating-robot.mood-sad .bot-mood-tag {
+    background: rgba(239, 68, 68, 0.22);
+    color: var(--danger);
+}
+
+.floating-robot.mood-bored .bot-mood-tag {
+    background: rgba(196, 181, 253, 0.22);
+    color: var(--pastel-purple);
+}
+
+#bot-speech-text {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--text-main);
+}
+
+/* مجسم الروبوت الطائر الأساسي */
+.bot-character {
+    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: botHover 2.4s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes botHover {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-7px) rotate(1.5deg); }
+}
+
+/* =========================================================================
+   حركات الملل الـ 4 المتنوعة واللطيفة (بدلاً من الدوران المستمر المزعج)
+   ========================================================================= */
+
+/* 1. حركة التثاؤب والنعاس الهادئ (Yawning & Sleepy Sway) */
+.bot-character.bored-yawn {
+    animation: botSleepySway 3.2s ease-in-out infinite !important;
+}
+@keyframes botSleepySway {
+    0%, 100% { transform: translateY(2px) rotate(-6deg) scale(0.98); }
+    50% { transform: translateY(-5px) rotate(6deg) scale(1.03); }
+}
+
+/* 2. حركة التلفت يميناً ويساراً للبحث عن المستخدم (Looking Around) */
+.bot-character.bored-look {
+    animation: botLookAroundBody 2.8s ease-in-out infinite !important;
+}
+@keyframes botLookAroundBody {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-4px) translateX(-5px) rotate(-8deg); }
+    75% { transform: translateY(-4px) translateX(5px) rotate(8deg); }
+}
+
+/* 3. حركة التنهد والتململ الخفيف (Sighing & Floating) */
+.bot-character.bored-sigh {
+    animation: botSighBob 2.5s ease-in-out infinite !important;
+}
+@keyframes botSighBob {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    40% { transform: translateY(-6px) scaleY(1.04); }
+    80% { transform: translateY(4px) scaleY(0.96); }
+}
+
+/* 4. شقلبة بهلوانية واحدة فقط ثم التوقف (Single Backflip Only - NOT infinite!) */
+.bot-character.bored-flip-once {
+    animation: botSingleFlip 1.1s cubic-bezier(0.45, 0.05, 0.55, 0.95) 1 forwards !important;
+}
+@keyframes botSingleFlip {
+    0% { transform: translateY(0) rotate(0deg); }
+    45% { transform: translateY(-18px) rotate(180deg) scale(1.08); }
+    100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
+
+/* حركة القلق عند وجود خطأ هندسي */
+.floating-robot.mood-sad .bot-character {
+    animation: botWorriedShake 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes botWorriedShake {
+    0% { transform: translateX(-2.5px) rotate(-3deg); }
+    100% { transform: translateX(2.5px) rotate(3deg); }
+}
+
+.bot-antenna {
+    width: 3px;
+    height: 10px;
+    background: var(--pastel-purple);
+    position: relative;
+}
+
+.bot-antenna-bulb {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--emerald);
+    position: absolute;
+    top: -6px;
+    left: -3px;
+    box-shadow: 0 0 10px var(--emerald);
+    transition: all 0.3s ease;
+}
+
+.floating-robot.mood-sad .bot-antenna-bulb {
+    background: var(--danger);
+    box-shadow: 0 0 12px var(--danger);
+}
+
+.floating-robot.mood-bored .bot-antenna-bulb {
+    background: var(--pastel-purple);
+    box-shadow: 0 0 10px var(--pastel-purple);
+}
+
+.bot-head {
+    width: 56px;
+    height: 44px;
+    background: linear-gradient(145deg, #2b3548, #181e2c);
+    border: 2px solid var(--rose-gold);
+    border-radius: 14px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.bot-ear {
+    width: 5px;
+    height: 14px;
+    background: var(--rose-gold);
+    position: absolute;
+    top: 13px;
+    border-radius: 3px;
+}
+.bot-ear.left { left: -6px; }
+.bot-ear.right { right: -6px; }
+
+.bot-face-screen {
+    width: 44px;
+    height: 30px;
+    background: #080b11;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+}
+
+.bot-eyes-row {
+    display: flex;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.bot-eye {
+    width: 8px;
+    height: 8px;
+    background: var(--emerald);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--emerald);
+    animation: eyeBlink 3.8s infinite;
+    transition: all 0.25s ease;
+}
+
+@keyframes eyeBlink {
+    0%, 94%, 98% { transform: scaleY(1); }
+    96% { transform: scaleY(0.1); }
+}
+
+/* تعبيرات العيون والفم عند الحزن */
+.floating-robot.mood-sad .bot-eye {
+    background: var(--danger);
+    box-shadow: 0 0 8px var(--danger);
+    height: 5px;
+    border-radius: 2px;
+}
+.floating-robot.mood-sad .left-eye { transform: rotate(20deg); }
+.floating-robot.mood-sad .right-eye { transform: rotate(-20deg); }
+
+/* تعبيرات العيون والفم عند الملل (4 تعبيرات مختلفة!) */
+.floating-robot.mood-bored .bot-eye {
+    background: var(--pastel-purple);
+    box-shadow: 0 0 6px var(--pastel-purple);
+}
+
+/* أ) تعبير التثاؤب والنعاس: عيون ناعسة نصف مغلقة + فم مفتوح يتثاءب */
+.bot-character.bored-yawn .bot-eye {
+    height: 4px;
+    border-radius: 0 0 6px 6px;
+    animation: none;
+}
+.bot-character.bored-yawn .bot-mouth {
+    width: 10px !important;
+    height: 10px !important;
+    border: 2px solid var(--pastel-purple) !important;
+    border-radius: 50% !important;
+    background: rgba(196, 181, 253, 0.15);
+    animation: yawnMouth 3.2s ease-in-out infinite;
+}
+@keyframes yawnMouth {
+    0%, 100% { transform: scale(0.6); }
+    50% { transform: scale(1.15); }
+}
+
+/* ب) تعبير التلفت يميناً ويساراً: العيون تتحرك داخل الشاشة */
+.bot-character.bored-look .bot-eyes-row {
+    animation: eyesLookLeftRight 2.8s ease-in-out infinite;
+}
+@keyframes eyesLookLeftRight {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+.bot-character.bored-look .bot-mouth {
+    width: 8px !important;
+    height: 4px !important;
+    border-bottom: 2px solid var(--pastel-purple) !important;
+    border-radius: 0 !important;
+}
+
+/* ج) تعبير التنهد والملل: عيون خطية وفم مستقيم */
+.bot-character.bored-sigh .bot-eye {
+    height: 3px;
+    width: 9px;
+    border-radius: 2px;
+    animation: none;
+}
+.bot-character.bored-sigh .bot-mouth {
+    width: 14px !important;
+    height: 2px !important;
+    border-bottom: 2.5px solid var(--pastel-purple) !important;
+    border-radius: 0 !important;
+}
+
+/* الفم الأساسي المبتسم */
+.bot-mouth {
+    width: 16px;
+    height: 7px;
+    border-bottom: 3px solid var(--emerald);
+    border-radius: 0 0 10px 10px;
+    transition: all 0.25s ease;
+}
+
+.floating-robot.mood-sad .bot-mouth {
+    border-bottom: none;
+    border-top: 3px solid var(--danger);
+    border-radius: 10px 10px 0 0;
+    margin-top: 3px;
+}
+
+.bot-torso {
+    width: 38px;
+    height: 22px;
+    background: linear-gradient(145deg, #232a3b, #141923);
+    border: 2px solid var(--pastel-purple);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot-core-heart {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--emerald);
+    box-shadow: 0 0 8px var(--emerald);
+    transition: all 0.3s ease;
+}
+
+.floating-robot.mood-sad .bot-core-heart {
+    background: var(--danger);
+    box-shadow: 0 0 8px var(--danger);
+}
+
+.floating-robot.mood-bored .bot-core-heart {
+    background: var(--pastel-purple);
+    box-shadow: 0 0 8px var(--pastel-purple);
+}
+
+.bot-arm {
+    width: 6px;
+    height: 15px;
+    background: var(--rose-gold);
+    border-radius: 4px;
+    position: absolute;
+    top: 2px;
+    transition: transform 0.3s ease;
+}
+.bot-arm.left-arm { left: -8px; transform-origin: top center; animation: waveLeft 2.2s infinite alternate; }
+.bot-arm.right-arm { right: -8px; transform-origin: top center; animation: waveRight 2.2s infinite alternate; }
+
+@keyframes waveLeft { 0% { transform: rotate(8deg); } 100% { transform: rotate(28deg); } }
+@keyframes waveRight { 0% { transform: rotate(-8deg); } 100% { transform: rotate(-28deg); } }
+
+.bot-thruster-flame {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(to bottom, var(--emerald), transparent);
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: thrusterPulse 0.25s infinite alternate;
+}
+
+@keyframes thrusterPulse {
+    from { transform: scaleY(0.8); opacity: 0.7; }
+    to { transform: scaleY(1.3); opacity: 1; }
+}
+
+/* العمود الأيمن: الحمولة والقياس الحي */
+.payload-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.payload-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    background: #12161f;
+    border: 1px solid var(--panel-border);
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border 0.2s;
+}
+
+.payload-item:hover {
+    border-color: var(--rose-gold);
+}
+
+.payload-item input {
+    margin-top: 3px;
+    accent-color: var(--emerald);
+    transform: scale(1.15);
+}
+
+.payload-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.79rem;
+}
+
+.payload-info span {
+    font-size: 0.69rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.sci-boost {
+    color: var(--pastel-purple);
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* أشرطة القياس الحي */
+.telemetry-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: auto;
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: #0d1017;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #252b3b;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 50%;
+    background: var(--emerald);
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.sci-fill {
+    background: linear-gradient(90deg, var(--rose-gold), var(--pastel-purple));
+}
+
+.launch-buttons-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.launch-btn {
+    flex: 1;
+    background: linear-gradient(135deg, var(--emerald), #059669);
+    color: #08100d;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.launch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--emerald-glow);
+}
+
+.launch-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.reset-view-btn {
+    background: #1e2433;
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    width: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+/* النافذة المنبثقة للنتيجة */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal-card {
+    background: var(--panel-dark);
+    border: 2px solid var(--emerald);
+    border-radius: 12px;
+    width: 500px;
+    max-width: 92%;
+    padding: 24px;
+    position: relative;
+    text-align: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.score-circle {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    border: 4px solid var(--emerald);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 14px auto;
+    color: var(--emerald);
+}
+
+.telemetry-log {
+    text-align: left;
+    background: #10131a;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 14px 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    list-style: none;
+}
+
+.retry-btn {
+    background: var(--emerald);
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+}

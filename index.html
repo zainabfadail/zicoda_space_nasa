@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Zicoda Space | NASA Mission Design Simulator 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- مكتبة Three.js للرسم ثلاثي الأبعاد -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="notranslate">
+
+    <!-- الشريط العلوي -->
+    <header class="top-nav">
+        <div class="brand">
+            <span class="badge-nasa">NASA SPACE APPS 2026</span>
+            <h1>ZICODA SPACE <span class="sub-brand">// 3D MISSION ARCHITECT & FLOATING AI BOT</span></h1>
+        </div>
+        <div class="mission-status-bar">
+            <div class="status-pill">TEAM: <strong>ZICODA SPACE (SOLO)</strong></div>
+            <div class="status-pill status-online" id="top-ai-status">AI COMPANION: <strong>FOLLOWING CURSOR</strong></div>
+        </div>
+    </header>
+
+    <!-- شبكة لوحة التحكم (3 أعمدة) -->
+    <main class="dashboard-grid">
+
+        <!-- العمود الأيسر: الوجهة، الصاروخ، الأنظمة الفرعية -->
+        <section class="panel config-panel">
+            <h2 class="panel-title">1. Target Destination</h2>
+            <div class="options-group" id="destination-group">
+                <button class="option-card active" data-dest="moon" onclick="selectDestination('moon')">
+                    <div class="card-header">
+                        <strong>The Moon</strong>
+                        <span class="diff-tag easy">Difficulty: Low</span>
+                    </div>
+                    <p>Short range, 100% solar power efficiency, no atmospheric heat shield required.</p>
+                </button>
+
+                <button class="option-card" data-dest="mars" onclick="selectDestination('mars')">
+                    <div class="card-header">
+                        <strong>Mars</strong>
+                        <span class="diff-tag medium">Difficulty: Medium</span>
+                    </div>
+                    <p>Medium range, 65% solar efficiency, requires Heavy Heat Shield & Deep Space Dish.</p>
+                </button>
+
+                <button class="option-card" data-dest="europa" onclick="selectDestination('europa')">
+                    <div class="card-header">
+                        <strong>Europa (Jupiter Moon)</strong>
+                        <span class="diff-tag hard">Difficulty: High</span>
+                    </div>
+                    <p>Deep space! Weak sunlight (15%), requires RTG Nuclear Power, Heavy Shield & Deep Space Dish.</p>
+                </button>
+            </div>
+
+            <h2 class="panel-title">2. Launch Vehicle (3D Rotating Rockets)</h2>
+            <div class="options-group" id="rocket-group">
+                <button class="option-card active" data-rocket="light" onclick="selectRocket('light')">
+                    <div class="card-header">
+                        <strong>Light Launcher (Falcon-Class)</strong>
+                        <span class="cost-tag">$40M</span>
+                    </div>
+                    <p>Sleek Single-Core 3D Rocket | Max Payload: <strong>1,250 kg</strong></p>
+                </button>
+
+                <button class="option-card" data-rocket="heavy" onclick="selectRocket('heavy')">
+                    <div class="card-header">
+                        <strong>Heavy SLS Rocket (Twin Boosters)</strong>
+                        <span class="cost-tag">$75M</span>
+                    </div>
+                    <p>Heavy Core + 2 Side Boosters | Max Payload: <strong>2,800 kg</strong></p>
+                </button>
+            </div>
+
+            <h2 class="panel-title">3. Core Subsystems</h2>
+            <div class="subsystem-selects">
+                <label>Power Source:</label>
+                <select id="power-select" onchange="onSubsystemChange('power', this.value)">
+                    <option value="solar">Standard Solar Panels ($15M | +350W | 120kg)</option>
+                    <option value="solar_plus">Enhanced Dual Solar Arrays ($28M | +520W | 190kg)</option>
+                    <option value="rtg">RTG Nuclear Battery ($45M | +600W Fixed | 280kg)</option>
+                </select>
+
+                <label>Communications System:</label>
+                <select id="comm-select" onchange="onSubsystemChange('comm', this.value)">
+                    <option value="uhf">Standard UHF Antenna ($10M | -60W | 90kg)</option>
+                    <option value="deep">High-Gain Deep Space Dish ($25M | -140W | 210kg)</option>
+                </select>
+
+                <label>Thermal & Radiation Shielding:</label>
+                <select id="shield-select" onchange="onSubsystemChange('shield', this.value)">
+                    <option value="light">Standard Thermal Coating ($8M | 110kg)</option>
+                    <option value="heavy">Reinforced Heat & Radiation Shield ($20M | 320kg)</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- العمود الأوسط: شاشة الفضاء ثلاثية الأبعاد الكاملة + شريط مراحل الرحلة -->
+        <section class="panel viewport-panel">
+            <div class="viewport-container" id="three-container">
+                <div class="viewport-overlay-top">
+                    <span class="live-indicator">● 3D SPACECRAFT & ROCKET ASSEMBLY</span>
+                    <span class="controls-hint">Drag to Rotate 360° | Scroll to Zoom</span>
+                </div>
+
+                <!-- شريط مراحل الرحلة الفضائية (إقلاع -> طيران -> هبوط -> عودة) -->
+                <div class="flight-timeline-hud hidden" id="flight-hud">
+                    <div class="flight-phase-title" id="flight-phase-text">🚀 PHASE 1: LIFTOFF & THRUSTER IGNITION</div>
+                    <div class="flight-progress-track">
+                        <div class="flight-progress-fill" id="flight-progress-bar"></div>
+                    </div>
+                    <div class="flight-steps-labels">
+                        <span id="step-1" class="active-step">1. Liftoff</span>
+                        <span id="step-2">2. Deep Cruise</span>
+                        <span id="step-3">3. Planet Landing</span>
+                        <span id="step-4">4. Earth Return</span>
+                    </div>
+                </div>
+
+                <div class="viewport-legend">
+                    💡 <strong>3D Legend:</strong> Lower Stage = Rotating Rocket (Light/SLS Boosters) | Upper Stage = Spacecraft Bus, Solar Wings, Dish & Science Orbs
+                </div>
+            </div>
+
+            <!-- شريط حالة الهندسة السريع أسفل الفضاء -->
+            <div class="engineering-status-strip" id="eng-status-strip">
+                <span class="strip-title">⚡ LIVE ENGINEERING CHECK:</span>
+                <span class="strip-msg" id="strip-warnings">✓ All telemetry systems nominal. Ready for full launch, landing & return mission!</span>
+            </div>
+        </section>
+
+        <!-- العمود الأيمن: الأدوات العلمية والقياس الحي -->
+        <section class="panel telemetry-panel">
+            <h2 class="panel-title">4. Scientific Payload</h2>
+            <p class="panel-subtitle">Select instruments to maximize Science Return:</p>
+            <div class="payload-list">
+                <label class="payload-item">
+                    <input type="checkbox" value="cam" checked onchange="onPayloadClick('cam', this.checked)">
+                    <div class="payload-info">
+                        <strong>High-Res Multispectral Camera</strong>
+                        <span>Cost: $15M | Mass: 150kg | Power: -80W | <em class="sci-boost">Science: +25%</em></span>
+                    </div>
+                </label>
+
+                <label class="payload-item">
+                    <input type="checkbox" value="spec" onchange="onPayloadClick('spec', this.checked)">
+                    <div class="payload-info">
+                        <strong>Thermal Infrared Spectrometer</strong>
+                        <span>Cost: $20M | Mass: 220kg | Power: -110W | <em class="sci-boost">Science: +30%</em></span>
+                    </div>
+                </label>
+
+                <label class="payload-item">
+                    <input type="checkbox" value="radar" onchange="onPayloadClick('radar', this.checked)">
+                    <div class="payload-info">
+                        <strong>Ice-Penetrating Subsurface Radar</strong>
+                        <span>Cost: $25M | Mass: 340kg | Power: -150W | <em class="sci-boost">Science: +35%</em></span>
+                    </div>
+                </label>
+
+                <label class="payload-item">
+                    <input type="checkbox" value="rover" onchange="onPayloadClick('rover', this.checked)">
+                    <div class="payload-info">
+                        <strong>Autonomous AI Micro-Rover</strong>
+                        <span>Cost: $35M | Mass: 480kg | Power: -130W | <em class="sci-boost">Science: +40%</em></span>
+                    </div>
+                </label>
+            </div>
+
+            <h2 class="panel-title">5. Live Resource Telemetry</h2>
+            <div class="telemetry-bars">
+                <div class="metric-group">
+                    <div class="metric-header">
+                        <span>Mission Budget (Cap: $180M)</span>
+                        <strong id="budget-text">$88M / $180M</strong>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="budget-bar"></div></div>
+                </div>
+
+                <div class="metric-group">
+                    <div class="metric-header">
+                        <span>Payload Mass vs Rocket Capacity</span>
+                        <strong id="mass-text">700 kg / 1250 kg</strong>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="mass-bar"></div></div>
+                </div>
+
+                <div class="metric-group">
+                    <div class="metric-header">
+                        <span>Power Consumption vs Supply</span>
+                        <strong id="power-text">190 W / 350 W</strong>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="power-bar"></div></div>
+                </div>
+
+                <div class="metric-group">
+                    <div class="metric-header">
+                        <span>Expected Science Yield</span>
+                        <strong id="science-text">25%</strong>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill sci-fill" id="science-bar"></div></div>
+                </div>
+            </div>
+
+            <div class="launch-buttons-group">
+                <button class="launch-btn" id="launch-btn" onclick="startLaunchSequence()">
+                    🚀 LAUNCH, LAND & RETURN
+                </button>
+                <button class="reset-view-btn" onclick="resetSpacecraftPosition()" title="Reset 3D View">
+                    ↺
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =================================================================
+         الروبوت الطائر التفاعلي الذي يتبع الماوس في كل مكان (FLOATING ZICODA-BOT)
+         ================================================================= -->
+    <div id="floating-robot-companion" class="floating-robot mood-happy">
+        <!-- فقاعة كلام الروبوت الذكية -->
+        <div class="bot-speech-bubble" id="bot-bubble">
+            <div class="bot-bubble-header">
+                <span class="bot-title">🤖 ZICODA-BOT</span>
+                <span class="bot-mood-tag" id="bot-mood-tag">SMILING 😊</span>
+            </div>
+            <p id="bot-speech-text">
+                Welcome Engineer Zainab! I'm your floating AI companion! Move your mouse anywhere—I'll follow you, explain every part, and cheer you on!
+            </p>
+        </div>
+
+        <!-- مجسم الروبوت المتحرك مع اليدين والهوائي والوجه التفاعلي -->
+        <div class="bot-character" id="bot-char" onclick="pokeFloatingRobot()" title="Click me to play or get a physics tip!">
+            <div class="bot-antenna">
+                <div class="bot-antenna-bulb"></div>
+            </div>
+            <div class="bot-head">
+                <div class="bot-ear left"></div>
+                <div class="bot-ear right"></div>
+                <div class="bot-face-screen">
+                    <div class="bot-eyes-row">
+                        <span class="bot-eye left-eye"></span>
+                        <span class="bot-eye right-eye"></span>
+                    </div>
+                    <div class="bot-mouth" id="bot-mouth"></div>
+                </div>
+            </div>
+            <div class="bot-torso">
+                <div class="bot-arm left-arm"></div>
+                <div class="bot-core-heart"></div>
+                <div class="bot-arm right-arm"></div>
+            </div>
+            <div class="bot-thruster-flame"></div>
+        </div>
+    </div>
+
+    <!-- نافذة النتيجة النهائية بعد رحلة الذهاب والهبوط والعودة -->
+    <div class="modal-backdrop hidden" id="result-modal">
+        <div class="modal-card" id="modal-card">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <h2 id="modal-title">Mission Outcome</h2>
+            <div class="score-circle" id="modal-score">0%</div>
+            <p id="modal-summary"></p>
+            <ul class="telemetry-log" id="modal-log"></ul>
+            <button class="retry-btn" onclick="closeModal()">MODIFY DESIGN / FLY AGAIN</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
